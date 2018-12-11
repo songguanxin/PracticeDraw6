@@ -14,13 +14,17 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.hencoder.hencoderpracticedraw6.R;
+import com.hencoder.hencoderpracticedraw6.Utils;
 
+import static android.os.Build.VERSION.PREVIEW_SDK_INT;
 import static android.os.Build.VERSION.SDK_INT;
 import static com.hencoder.hencoderpracticedraw6.Utils.dpToPixel;
 
 public class Practice01Translation extends RelativeLayout {
     Button animateBt;
     ImageView imageView;
+    int translateState = 0;
+    int translateCount = SDK_INT > Build.VERSION_CODES.LOLLIPOP ? 6 : 4 ;
 
     public Practice01Translation(Context context) {
         super(context);
@@ -49,6 +53,36 @@ public class Practice01Translation extends RelativeLayout {
             @Override
             public void onClick(final View v) {
                 // TODO 在这里处理点击事件，通过 View.animate().translationX/Y/Z() 来让 View 平移
+                switch (translateState) {
+                    case 0:
+                        imageView.animate().translationX(Utils.dpToPixel(100));
+                        break;
+                    case 1:
+                        imageView.animate().translationX(0);
+                        break;
+                    case 2:
+                        imageView.animate().translationY(Utils.dpToPixel(100));
+                        break;
+                    case 3:
+                        imageView.animate().translationY(0);
+                        break;
+                    case 4:
+                        if (SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+                            imageView.animate().translationZ(Utils.dpToPixel(20));
+                        }
+                        break;
+                    case 5:
+                        if (SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+                            imageView.animate().translationZ(0);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                translateState++;
+                if (translateState == translateCount) {
+                    translateState = 0;
+                }
             }
         });
     }
